@@ -1,0 +1,16 @@
+import yaml
+from transform.cleanup.purge import Purge
+
+def load_config():
+    with open('config.yaml', 'r') as config_file:
+        return yaml.safe_load(config_file)
+
+config = load_config()
+deletable_extensions = config["extensions"]["deletable"]
+paths = config["paths"]
+
+aux_dir = paths["root"] + paths["aux_dir"]
+
+purge_instanciacao = Purge(aux_dir, deletable_extensions)
+
+purge_instanciacao.scan()
