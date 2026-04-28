@@ -1,6 +1,10 @@
-import yaml
 from pathlib import Path
+import csv
+from datetime import datetime
+import os
 
+
+today = datetime.today().date()
 
 class Purge:
     def __init__(self, where_to_purge, deletable_extensions):
@@ -9,11 +13,19 @@ class Purge:
 
     def scan(self):
         dir = Path(self.where_to_purge)
-        all_deletable_files = []
-        for deletable_extension in self.deletable_extensions:
-            print(deletable_extension)
-            deletable_files = dir.rglob(f"*{deletable_extension}")
-            print(deletable_files)
-            all_deletable_files.extend(deletable_files)
-        print(dir, all_deletable_files)
-    # def execute(self):
+
+        files_by_extension = []
+
+        for ext in self.deletable_extensions:
+            print(ext)
+            deletable_files = dir.rglob(f"*{ext}")
+            files_by_extension.extend(deletable_files)
+            print(files_by_extension)
+
+        filename = f'_{dir.name}_{today.strftime("%Y-%m-%d")}.csv'  # F-string e formatação
+        
+        with open(filename, 'w', newline='') as file:
+            writer = csv.writer(file)
+            writer.writerows([[f] for f in files_by_extension])  # Escreve como lista de listas (uma coluna)
+            os.startfile(filename)
+    # def execute(self):,
