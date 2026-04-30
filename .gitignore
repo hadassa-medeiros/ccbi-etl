@@ -1,5 +1,6 @@
 config.yaml
 *.csv
+llm_testing/
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
